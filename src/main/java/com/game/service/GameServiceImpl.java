@@ -12,7 +12,7 @@ public class GameServiceImpl implements GameService {
 		System.out.println("Archer " + player + " Score is -> " + score);
 	}
 
-	private static int executePlay(int score, int chances) {
+	private  int executePlay(int score, int chances) {
 		int firstTry = ArcheryUtil.generateRandomNo();
 		System.out.println("Chance No " + chances);
 		System.out.println("1st arrow -> " + firstTry);
