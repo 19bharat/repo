@@ -1,9 +1,12 @@
 package com.game.main;
 
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.game.util.ArcheryUtil;
+import com.game.exception.ArcheryGameException;
+import com.game.service.GameService;
+import com.game.service.GameServiceImpl;
 
 public class Main {
 
@@ -11,39 +14,20 @@ public class Main {
 
 	public static void main(String[] args) {
 		log.log(Level.INFO, "Player Entered");
-		log.log(Level.INFO, "Start the Game for Player 1");
-		startGameForPlayer(1);
-		log.log(Level.INFO, "Start the Game for Player 2");
-		startGameForPlayer(2);
-
-	}
-
-	private static void startGameForPlayer(int player) {
-		int score = 0;
-		for (int chances = 1; chances <= 10; chances++) {
-			int firstTry = ArcheryUtil.generateRandomNo();
-			System.out.println("Chance No " + chances);
-			System.out.println("1st arrow -> " + firstTry);
-			score = score + firstTry;
-			if (firstTry != 10 ) {
-				int secondTry = ArcheryUtil.generateRandomNo(10-firstTry);
-				System.out.println("2nd arrow -> " + secondTry);
-				score = score + secondTry;
-			} else if (firstTry == 10 && chances == 10) {
-				int secondTry = ArcheryUtil.generateRandomNo();
-				System.out.println("2nd arrow -> " + secondTry);
-				score = score + secondTry;
-				if (secondTry == 10) {
-					int thirdTry = ArcheryUtil.generateRandomNo();
-					System.out.println("3rd arrow -> " + thirdTry);
-					score = score + thirdTry;
-				}
-			} else {
-				System.out.println("2nd arrow -> No need to shoot(arrow will be returned) ");
+		Scanner inputPlayer = new Scanner(System.in);
+		try {
+			int players = inputPlayer.nextInt();
+			GameService gameService = new GameServiceImpl();
+			for (int player = 1; player <= players; player++) {
+				log.log(Level.INFO, "Start the Game for Player " + player);
+				gameService.startGameForPlayer(player);
 			}
-
+		} catch (Exception e) {
+			throw new ArcheryGameException("Problem Occoured while execution");
+		} finally {
+			inputPlayer.close();
 		}
-		System.out.println("Archer " + player +  " Score is -> " + score);
+
 	}
 
 }
